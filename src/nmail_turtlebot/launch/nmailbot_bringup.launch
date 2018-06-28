@@ -1,0 +1,50 @@
+<launch>
+
+<!-- Turtlebot -->
+  <arg name="battery" default="/proc/acpi/battery/BAT0"  />
+  <include file="$(find nmail_turtlebot)/launch/includes/robot.launch.xml">
+    <arg name="base"    value="kobuki"/>
+    <arg name="stacks"  value="hexagons"/>
+    <arg name="3d_sensor"   value="velodyne"/>
+  </include>
+  <include file="$(find turtlebot_bringup)/launch/includes/mobile_base.launch.xml">
+    <arg name="base" value="kobuki" />
+    <arg name="serialport" value="/dev/ttyUSB0" />
+  </include>
+  <include unless="$(eval arg('battery') == 'None')" file="$(find turtlebot_bringup)/launch/includes/netbook.launch.xml">
+    <arg name="battery" value="$(arg battery)" />
+  </include>
+
+<!-- velodyne puck -->
+  <include file="$(find turtlebot_navigation)/launch/includes/gmapping/gmapping.launch.xml">
+    <arg name="scan_topic" value="/laser_scan" />
+  </include>
+
+<!-- velodyne puck -->
+  <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
+
+<!-- Cartographer -->
+  <arg name="configuration_basename" value="turtlebot_urg_lidar_2d.lua"/>
+
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find cartographer_turtlebot)/configuration_files
+          -configuration_basename $(arg configuration_basename)"
+      output="screen">
+    <remap from="points2" to="/velodyne_points" />
+  </node>
+
+  <node name="flat_world_imu_node" pkg="cartographer_turtlebot"
+      type="cartographer_flat_world_imu_node" output="screen">
+    <remap from="imu_in" to="/mobile_base/sensors/imu_data_raw" />
+    <remap from="imu_out" to="/imu" />
+  </node>
+
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+      type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+
+<!-- rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" required="true"
+      args="-d $(find nmail_turtlebot)/launch/config_rviz/demo_turtlebot.rviz" />
+
+</launch>

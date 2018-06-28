@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>nmail_turtlebot</name>
+  <version>0.0.1</version>
+  <description>The nmail_turtlebot package</description>
+  <maintainer email="jsha2913@gmail.com">Jeesoo Ha</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>rospy</depend>
+  <depend>roslib</depend>
+  <depend>sensor_msgs</depend>
+  
+  <depend>cartographer_ros</depend>
+  <depend>depthimage_to_laserscan</depend>
+  <depend>kobuki</depend>
+  <depend>kobuki_core</depend>
+  <depend>message_runtime</depend>
+  <depend>openni2_launch</depend>
+  <depend>urg_node</depend>
+
+</package>

@@ -4,3 +4,4 @@
 - git: {local-name: realsense, uri: 'https://github.com/intel-ros/realsense.git'}
 - git: {local-name: velodyne, uri: 'https://github.com/ros-drivers/velodyne.git'}
 - git: {local-name: microstrain_3DM_GX5, uri: 'https://github.com/KAIST-NMAIL/microstrain_3DM_GX5.git'}
+- git: {local-name: cartographer_turtlebot: 'https://github.com/googlecartographer/cartographer_turtlebot.git'}
